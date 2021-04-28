@@ -29,11 +29,11 @@ class IwPage extends Page {
     }
 
     get dkLabel() {
-        return $('label=Don\'t Know')
+        return $('label=No sé')
     }
 
     get rfLabel() {
-        return $('label=Refuse')
+        return $('label=Prefiero no responder')
     }
 
     get questionTitle() {

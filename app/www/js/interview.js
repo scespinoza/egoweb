@@ -191,7 +191,7 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
       $scope.options['all'] = $.extend(true, {}, options[$scope.questions[k].ID]);
       if ($scope.questions[k].DONTKNOWBUTTON == true) {
         var button = new Object;
-        button.NAME = "Don't Know";
+        button.NAME = "No lo sé";
         button.ID = "DONT_KNOW";
         button.checked = false;
         $scope.options['all'][Object.keys($scope.options['all']).length] = button;
@@ -284,23 +284,23 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
     }
 
     if ($scope.questions[k].ANSWERTYPE == "MULTIPLE_SELECTION") {
-      $scope.phrase = "Please select ";
+      $scope.phrase = "Por favor, selecciona desde ";
       if ($scope.questions[k].MINCHECKABLEBOXES != null && $scope.questions[k].MINCHECKABLEBOXES != null && $scope.questions[k].MAXCHECKABLEBOXES != "" && $scope.questions[k].MINCHECKABLEBOXES == $scope.questions[k].MAXCHECKABLEBOXES)
         $scope.phrase += $scope.questions[k].MAXCHECKABLEBOXES;
       else if ($scope.questions[k].MINCHECKABLEBOXES != null && $scope.questions[k].MAXCHECKABLEBOXES != null && $scope.questions[k].MINCHECKABLEBOXES != $scope.questions[k].MAXCHECKABLEBOXES)
-        $scope.phrase += $scope.questions[k].MINCHECKABLEBOXES + " to " + $scope.questions[k].MAXCHECKABLEBOXES;
+        $scope.phrase += $scope.questions[k].MINCHECKABLEBOXES + " hasta " + $scope.questions[k].MAXCHECKABLEBOXES;
       else if ($scope.questions[k].MINCHECKABLEBOXES == null && $scope.questions[k].MAXCHECKABLEBOXES != null)
-        $scope.phrase += " up to " + $scope.questions[k].MAXCHECKABLEBOXES;
+        $scope.phrase += " hasta " + $scope.questions[k].MAXCHECKABLEBOXES;
       if ($scope.questions[k].MINCHECKABLEBOXES != null && $scope.questions[k].MAXCHECKABLEBOXES == null){
         $scope.phrase += " all that apply" //" at least " + $scope.questions[k].MINCHECKABLEBOXES;
       } else {
         if ($scope.questions[k].MAXCHECKABLEBOXES > 1 ||  $scope.questions[k].MINCHECKABLEBOXES > 1)
-          $scope.phrase += " responses";
+          $scope.phrase += " respuestas";
         else
-          $scope.phrase += " response";
+          $scope.phrase += " respuesta";
       }
       if ($scope.questions[k].ASKINGSTYLELIST == 1 && $scope.questions[k].WITHLISTRANGE == false)
-        $scope.phrase += " for each row";
+        $scope.phrase += " para cada fila";
     }
 
     if ($scope.questions[k].ANSWERTYPE == "NUMERICAL" && $scope.questions[k].SUBJECTTYPE != "EGO_ID") {
@@ -324,20 +324,20 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
       }
 
       if (min != "" && max != "")
-        $scope.phrase = "Please enter a number from " + min + " to " + max;
+        $scope.phrase = "Por favor, ingresa un número de " + min + " hasta " + max;
       else if (min == "" && max != "")
-        $scope.phrase = "Please enter a number (" + max + " or lower)";
+        $scope.phrase = "Por favor, ingresa un número (" + max + " o menor)";
       else if (min != "" && max == "")
-        $scope.phrase = "Please enter a number (" + min + " or higher)";
-      if ($scope.questions[k].ASKINGSTYLELIST == 1 && $scope.questions[k].WITHLISTRANGE == false && $scope.phrase != "" && !$scope.phrase.match("for each row"))
-        $scope.phrase += " for each row";
+        $scope.phrase = "Por favor, ingresa un número (" + min + " o mayor)";
+      if ($scope.questions[k].ASKINGSTYLELIST == 1 && $scope.questions[k].WITHLISTRANGE == false && $scope.phrase != "" && !$scope.phrase.match("por cada fila"))
+        $scope.phrase += " por cada fila";
     }
     if($scope.questions[k].ANSWERTYPE == "TEXTUAL" || $scope.questions[k].ANSWERTYPE == "TEXTUAL_PP")
       $scope.answers[array_id].VALUE = htmldecode($scope.answers[array_id].VALUE);
 
     if ($scope.questions[k].DONTKNOWBUTTON == true) {
       var button = new Object;
-      button.NAME = "Don't Know";
+      button.NAME = "No Sé";
       button.ID = "DONT_KNOW";
       button.checked = false;
       if ($scope.answers[array_id].SKIPREASON == "DONT_KNOW")
@@ -347,7 +347,7 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
 
     if ($scope.questions[k].REFUSEBUTTON == true) {
       var button = new Object;
-      button.NAME = "Refuse";
+      button.NAME = "Prefiero no responder";
       button.ID = "REFUSE";
       $scope.hasRefuse = true;
       button.checked = false;
@@ -500,23 +500,23 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
     for (k in $scope.alters) {
       if ($("#Alters_name").val().toLowerCase() == $scope.alters[k].NAME.toLowerCase()) {
         if($scope.questions[0].NONEBUTTON != true)
-          $scope.errors[0] = 'That name has already been listed';
+          $scope.errors[0] = 'El nombre ya fue enlistado.';
         if ($scope.alters[k].NAMEGENQIDS != null)
           var nameGenQIds = $scope.alters[k].NAMEGENQIDS.split(",");
         if (nameGenQIds.indexOf($("#Alters_nameGenQIds").val()) > -1)
-          $scope.errors[0] = 'That name is already on this list';
+          $scope.errors[0] = 'El nombre ya existe en la lista.';
       }
     }
 
     // check pre-defined participant list
     if ($scope.participants.length > 0 && $scope.questions[0].RESTRICTLIST == true) {
       if ($scope.participants.indexOf($("#Alters_name").val().trim()) == -1) {
-        $scope.errors[0] = 'Name not found in list';
+        $scope.errors[0] = 'Nombre no encontrado en la lista';
       }
     }
 
     if ($("#Alters_name").val().trim() == "") {
-      $scope.errors[0] = 'Name cannot be blank';
+      $scope.errors[0] = 'El nombre no puede estar en blanco';
     }
 
     // check to make sure the form is completely valid
@@ -763,7 +763,7 @@ app.directive('checkAnswer', [function () {
             var noun = " people";
             if(scope.questions[0].MINLITERAL == 1)
               noun = " person";
-            scope.errors[array_id] = 'Please list at least ' + scope.questions[0].MINLITERAL + noun + ".";
+            scope.errors[array_id] = 'Por favor, lista al menos ' + scope.questions[0].MINLITERAL + noun + ".";
             valid = false;
           } else {
             delete scope.errors[0];
@@ -791,7 +791,7 @@ app.directive('checkAnswer', [function () {
           var numberErrors = 0;
           var showError = false;
           if ((value == "" && scope.answers[array_id].SKIPREASON == "NONE") || (value != "" && isNaN(parseInt(value)))) {
-            errorMsg = 'Please enter a number.';
+            errorMsg = 'Por favor, ingresa un número.';
             showError = true;
           }
           if (question.MINLIMITTYPE == "NLT_LITERAL") {
@@ -812,11 +812,11 @@ app.directive('checkAnswer', [function () {
             showError = true;
 
           if (numberErrors == 3)
-            errorMsg = "The range of valid answers is " + min + " to " + max + ".";
+            errorMsg = "El rango de respuestas válidas es " + min + " hasta " + max + ".";
           else if (numberErrors == 2)
-            errorMsg = "The range of valid answers is " + max + " or fewer.";
+            errorMsg = "El rango de respuestas válidas es " + max + " o menor.";
           else if (numberErrors == 1)
-            errorMsg = "The range of valid answers is " + min + " or greater.";
+            errorMsg = "El rango de respuestas válidas es " + min + " o mayor.";
 
           if (showError) {
             scope.errors[array_id] = errorMsg;
@@ -910,15 +910,15 @@ app.directive('checkAnswer', [function () {
           if (max != 1)
             adds = 's';
           if (parseInt(question.ASKINGSTYLELIST) == 1)
-            adds += ' for each row';
+            adds += ' por cada fila';
           if (numberErrors == 3 && min == max && showError)
-            errorMsg = "Select " + max + " response" + adds + " please.";
+            errorMsg = "Selecciona " + max + " respuesta" + adds + " por favor.";
           else if (numberErrors == 3 && min != max && showError)
-            errorMsg = "Select " + min + " to " + max + " response" + adds + " please.";
+            errorMsg = "Selecciona de " + min + " a " + max + " respuesta" + adds + " por favor.";
           else if (numberErrors == 2 && showError)
-            errorMsg = "You may select up to " + max + " response" + adds + " please.";
+            errorMsg = "Puedes seleccionar hasta " + max + " respuesta" + adds + " por favor.";
           else if (numberErrors == 1 && showError)
-            errorMsg = "You must select at least " + min + " response" + adds + " please.";
+            errorMsg = "Debes seleccionar al menos " + min + " respuesta" + adds + " porfavor.";
           //if(answer.OTHERSPECIFYTEXT && showError)
           //	showError = false;
 
@@ -996,7 +996,7 @@ app.directive('checkAnswer', [function () {
         if (attr.answerType == "TEXTUAL") {
           if (scope.answers[array_id].SKIPREASON != "REFUSE" && scope.answers[array_id].SKIPREASON != "DONT_KNOW") {
             if (value == "") {
-              scope.errors[array_id] = "Value cannot be blank.";
+              scope.errors[array_id] = "El valor no puede estar vacío.";
               valid = false;
             } else {
               delete scope.errors[array_id];
@@ -1011,7 +1011,7 @@ app.directive('checkAnswer', [function () {
           var numberErrors = 0;
           var showError = false;
           if ((value == "" && scope.answers[array_id].SKIPREASON == "NONE") || (value != "" && isNaN(parseInt(value)))) {
-            scope.errors[array_id] = 'Please enter a number.';
+            scope.errors[array_id] = 'Por favor, ingresa un número.';
             valid = false;
           }
           if (question.MINLIMITTYPE == "NLT_LITERAL") {
@@ -1032,11 +1032,11 @@ app.directive('checkAnswer', [function () {
             showError = true;
 
           if (numberErrors == 3 && showError)
-            errorMsg = "The range of valid answers is " + min + " to " + max + ".";
+            errorMsg = "El rango de respuestas válidas es desde " + min + " hasta " + max + ".";
           else if (numberErrors == 2 && showError)
-            errorMsg = "The range of valid answers is " + max + " or fewer.";
+            errorMsg = "El rango de respuestas válidas es desde " + max + " o menor.";
           else if (numberErrors == 1 && showError)
-            errorMsg = "The range of valid answers is " + min + " or greater.";
+            errorMsg = "El rango de respuestas válidas es desde " + min + " o mayor.";
 
           if (showError) {
             scope.errors[array_id] = errorMsg;
@@ -1053,38 +1053,38 @@ app.directive('checkAnswer', [function () {
             var time = value.match(/(\d+):(\d+) (AM|PM)/);
             if (time && time.length > 2) {
               if (parseInt(time[1]) < 1 || parseInt(time[1]) > 12) {
-                scope.errors[array_id] = 'Please enter 1 to 12 for HH.';
+                scope.errors[array_id] = 'Por favor, ingresa 1 hasta 12 en HH.';
                 valid = false;
               }
               if (parseInt(time[2]) < 0 || parseInt(time[2]) > 59) {
-                scope.errors[array_id] = 'Please enter 0 to 59 for MM.';
+                scope.errors[array_id] = 'Por favor, ingresa 0 hasta 59 en MM.';
                 valid = false;
               }
             } else {
               if (scope.timeBits(question.TIMEUNITS, 'MINUTE')) {
-                scope.errors[array_id] = 'Please enter the minutes.';
+                scope.errors[array_id] = 'Por favor, ingresa los minutos.';
                 valid = false;
               }
               if (scope.timeBits(question.TIMEUNITS, 'HOUR')) {
-                scope.errors[array_id] = 'Please enter the time of day.';
+                scope.errors[array_id] = 'Por favor, ingresa la hora del día.';
                 valid = false;
               }
             }
             if (scope.timeBits(question.TIMEUNITS, 'YEAR') && !year) {
-              scope.errors[array_id] = 'Please enter a valid year.';
+              scope.errors[array_id] = 'Por favor, ingresa un año válido.';
               valid = false;
             }
             if (scope.timeBits(question.TIMEUNITS, 'MONTH') && !month) {
-              scope.errors[array_id] = 'Please enter a month.';
+              scope.errors[array_id] = 'Por favor, ingresa un mes.';
               valid = false;
             }
             if (scope.timeBits(question.TIMEUNITS, 'MONTH') && scope.timeBits(question.TIMEUNITS, 'YEAR') && scope.timeBits(question.TIMEUNITS, 'DAY') && year && !date) {
-              scope.errors[array_id] = 'Please enter a day of the month.';
+              scope.errors[array_id] = 'Por favor, ingresa un día del mes.';
               valid = false;
             }
             if (date) {
               if (parseInt(date[2]) < 1 || parseInt(date[2]) > 31) {
-                scope.errors[array_id] = 'Please enter a different number for the day of month.';
+                scope.errors[array_id] = 'Por favor, ingrsa un día del mes distinto.';
                 valid = false;
               }
             }
@@ -1098,7 +1098,7 @@ app.directive('checkAnswer', [function () {
         if (attr.answerType == "TIME_SPAN") {
           if (scope.answers[array_id].SKIPREASON != "REFUSE" && scope.answers[array_id].SKIPREASON != "DONT_KNOW") {
             if(value.trim() == ""){
-              scope.errors[array_id] = 'Please fill in one of the fields.';
+              scope.errors[array_id] = 'Por favor, llena uno de los campos.';
               valid = false;            }
           } else {
             delete scope.errors[array_id];
@@ -1130,15 +1130,15 @@ app.directive('checkAnswer', [function () {
           if (max != 1)
             adds = 's';
           if (parseInt(question.ASKINGSTYLELIST) == 1)
-            adds += ' for each row';
+            adds += ' por cada fila';
           if (numberErrors == 3 && min == max && showError)
-            errorMsg = "Select " + max + " response" + adds + " please.";
+            errorMsg = "Selecciona  " + max + " respuesta" + adds + " por favor.";
           else if (numberErrors == 3 && min != max && showError)
-            errorMsg = "Select " + min + " to " + max + " response" + adds + " please.";
+            errorMsg = "Selecciona " + min + " to " + max + " respuesta" + adds + " por favor.";
           else if (numberErrors == 2 && showError)
-            errorMsg = "You may select up to " + max + " response" + adds + " please.";
+            errorMsg = "Puedes seleccionar hasta " + max + " respuesta" + adds + " por favor.";
           else if (numberErrors == 1 && showError)
-            errorMsg = "You must select at least " + min + " response" + adds + " please.";
+            errorMsg = "Debes seleccionar al menos " + min + " respuesta" + adds + " por favor.";
           //if(answer.OTHERSPECIFYTEXT && showError)
           //	showError = false;
 
@@ -1176,11 +1176,11 @@ app.directive('checkAnswer', [function () {
               }
 
               valid = false;
-              scope.errors[array_id] = "Please select " + errorMsg + " response(s).  You selected " + checks + ".";
+              scope.errors[array_id] = "Por favor, selecciona " + errorMsg + " respuesta(s).  Seleccionaste " + checks + ".";
 
             } else {
               for (k in scope.errors) {
-                if (scope.errors[k].match("Please select "))
+                if (scope.errors[k].match("Por favor, selecciona "))
                   delete scope.errors[k];
               }
               for (k in scope.answerForm) {
