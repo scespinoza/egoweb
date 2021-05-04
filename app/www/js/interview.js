@@ -308,6 +308,8 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
       else
         $scope.dates[array_id].AMPM = "";
     }
+    
+   
 
     if ($scope.questions[k].ANSWERTYPE == "MULTIPLE_SELECTION") {
       $scope.phrase = "Please select ";
@@ -365,7 +367,7 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
       var button = new Object;
       button.NAME = "Don't Know";
       button.ID = "DONT_KNOW";
-      button.checked = false;
+      button.checked = true;
       if ($scope.answers[array_id].SKIPREASON == "DONT_KNOW")
         button.checked = true;
       $scope.options[array_id][Object.keys($scope.options[array_id]).length] = button;
@@ -376,7 +378,7 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
       button.NAME = "Refuse";
       button.ID = "REFUSE";
       $scope.hasRefuse = true;
-      button.checked = false;
+      button.checked = true;
       if ($scope.answers[array_id].SKIPREASON == "REFUSE")
         button.checked = true;
       $scope.options[array_id][Object.keys($scope.options[array_id]).length] = button;
@@ -518,6 +520,7 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
   }
 
   $scope.submitForm = function (isValid) {
+    
     // check to make sure the form is completely valid
     console.log(isValid)
     if (isValid || $scope.refuseCount > 0) {
@@ -601,7 +604,7 @@ app.controller('interviewController', ['$scope', '$log', '$routeParams', '$sce',
   $scope.unSkip = function (array_id) {
     if (typeof $scope.answers[array_id].VALUE != "undefined" && $scope.answers[array_id].VALUE != "" && $scope.answers[array_id].VALUE != "SKIPREASON") {
       for (k in $scope.options[array_id]) {
-        $scope.options[array_id][k].checked = false;
+        $scope.options[array_id][k].checked = true;
       }
       $scope.answers[array_id].SKIPREASON = "NONE";
     }
@@ -808,8 +811,9 @@ app.directive('checkAnswer', [function () {
         var valid = true;
         var array_id = attr.arrayId;
         var question = questions[attr.questionId];
-        console.log(question);
+  
         console.log("check:" + value);
+        console.log(scope.questions[k])
 
         if (attr.answerType == "NAME_GENERATOR") {
           if ((typeof scope.answers[array_id] != "undefined" && scope.answers[array_id].SKIPREASON != "REFUSE" && scope.answers[array_id].SKIPREASON != "DONT_KNOW" || typeof scope.answers[array_id] == "undefined") && Object.keys(scope.nGalters).length < scope.questions[0].MINLITERAL) {

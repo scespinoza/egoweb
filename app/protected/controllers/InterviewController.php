@@ -122,7 +122,7 @@ class InterviewController extends Controller
                 if(!isset($interview)){
                     $interview = new Interview;
                     $interview->studyId = $study->id;
-                    $page = 1;
+                    $page = 0;
                     if($interview->save()){
                         $interviewId = $interview->id;
                         $egoQs = Question::model()->findAllByAttributes(array("subjectType"=>"EGO_ID", "studyId"=>$study->id));
